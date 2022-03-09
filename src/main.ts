@@ -1,33 +1,25 @@
 import * as PIXI from 'pixi.js'
 import * as dat from 'dat.gui'
-import * as filters from 'pixi-filters'     //add filters gui
-import { AdjustmentFilter } from 'pixi-filters';
-
-
-let bg = new PIXI.Graphics();       //background rectangle (not working makes the program too laggy)
-
-let velocityx = Math.random();
-let velocityy = Math.random();
 
 let color = {
-    background: '#345678'
+    background: '#345678'       //Background color to control from GUI
 }
-let sticker_control_1 = {           //each stick is its own object and can be controlled
-    Sticker:0,
+
+let sticker_control_1 = {       //each sticker is its own object and can be controlled stciker can be manipulated by height with rotation and number
+    Sticker:0,                  
     width:100,
     height:200,
     rotation: 0,
-    is_moving:false,
-    xvel:Math.random() + 1,
+    is_moving:false,                //is_moving controls all sprites, I wanted to get them moving each on thier own but ran out of time 
+    xvel:Math.random() + 1,         //each stciker has its own math.random() to change its speed
     yvel:Math.random() + 1
-
 }
-let sticker_control_2 = {
+                                //same for each unique sticker 
+let sticker_control_2 = {           
     Sticker:0,
     width:100,
     height:40,
     rotation: 0,
-    is_moving:false,
     xvel:Math.random()+ 1,
     yvel:Math.random()+ 1
 }
@@ -37,7 +29,6 @@ let sticker_control_3 = {
     width:100,
     height:40,
     rotation: 0,
-    is_moving:false,
     xvel:Math.random()+ 1,
     yvel:Math.random()+ 1
 }
@@ -47,7 +38,6 @@ let sticker_control_4 = {
     width:100,
     height:40,
     rotation: 0,
-    is_moving:false,
     xvel:Math.random()+ 1,
     yvel:Math.random()+ 1
 }
@@ -57,7 +47,6 @@ let sticker_control_5 = {
     width:100,
     height:40,
     rotation: 0,
-    is_moving:false,
     xvel:Math.random()+ 1,
     yvel:Math.random()+ 1
     
@@ -72,42 +61,30 @@ const load = (app: PIXI.Application) => {
     return new Promise<void>((resolve) => {
         app.loader.add('world1', 'assets/hello-world.png')
                   .add('red_pika', 'assets/red_pika.png')
-                  .add('')
-                    .load(() => {
-                         resolve();
-                    });
+                  .add('link',  'assets/link.png')
+                  .add('ness', 'assets/ness.png')
+                  .add('sonic', 'assets/sonic.png')
+                  .add('yoshi', 'assets/yoshi.png')
+                  .add('pac',  'assets/pac.png')
+                  .add('pac_ghost', 'assets/pac_ghost.png')
+                  .add('megaman',  'assets/megaman.png')
+
+                  .load(() => {
+                        resolve();
+                  });
         });
 };
-
-let stickers = [
-    'assets/hello-world.png',  //0
-    'assets/red_pika.png',
-    'assets/link.png',
-    'assets/ness.png',
-    'assets/sonic.png',
-    'assets/yoshi.png',
-    'assets/pac.png',
-    'assets/pac_ghost.png',
-    'assets/megaman.png',       //88
-
-]                   //add for loop? is there a way to add these properly 
-
-const texture = PIXI.Sprite.from(stickers[0]); //adding stickers to be manipulated 
-const texture1 = PIXI.Sprite.from(stickers[1]);
-const texture2 = PIXI.Sprite.from(stickers[2]);
-const texture3 = PIXI.Sprite.from(stickers[3]);
-const texture4 = PIXI.Sprite.from(stickers[4]);
-const texture5 = PIXI.Sprite.from(stickers[5]);
-const texture6 = PIXI.Sprite.from(stickers[6]);
-const texture7 = PIXI.Sprite.from(stickers[7]);
-const texture8 = PIXI.Sprite.from(stickers[8]);
-//const texture9 = PIXI.Sprite.from(stickers[9]);
-//texture.x = (100)
-//texture.y = 100
-
+const texture = PIXI.Sprite.from('assets/hello-world.png'); //adding stickers to be manipulated 
+const texture1 = PIXI.Sprite.from('assets/red_pika.png');
+const texture2 = PIXI.Sprite.from('assets/link.png');
+const texture3 = PIXI.Sprite.from( 'assets/ness.png');
+const texture4 = PIXI.Sprite.from( 'assets/sonic.png');
+const texture5 = PIXI.Sprite.from('assets/yoshi.png');
+const texture6 = PIXI.Sprite.from('assets/pac.png');
+const texture7 = PIXI.Sprite.from('assets/pac_ghost.png');
+const texture8 = PIXI.Sprite.from( 'assets/megaman.png');
 
 const main = async () => {
-
     document.body.style.margin = '0';
     app.renderer.view.style.position = 'absolute';
     app.renderer.view.style.display = 'block';
@@ -132,23 +109,22 @@ const main = async () => {
     document.body.appendChild(app.view);
     //GUI controls 
     const gui = new dat.GUI()
-    //let sticker_folder = gui.addFolder("Add Stickers")   use a new file for this 
-    //sticker_folder.add(s1)
-    // let bg_gui = gui.addFolder("Background")
-    // bg_gui.addColor(background_control, "color")    //each sticker has its own gui controll
+   //each sticker has its own gui controll
     gui.addColor(color, "background").onChange(value => {
 		let tempColor = value.slice(1)
         tempColor = '0x' + tempColor;
 		app.renderer.backgroundColor = parseInt(tempColor)
 	})
 
+    //gui setup for moving 
     gui.add(sticker_control_1,"is_moving")
 
+    //gui setup for eac sticker
     let s1 = gui.addFolder("Sticker #1")
-    s1.add(sticker_control_1, "Sticker", 0, 9)
-    s1.add(sticker_control_1,"width",0,300)
-    s1.add(sticker_control_1,"height",0,300)
-    s1.add(sticker_control_1,"rotation",0,10)
+    s1.add(sticker_control_1, "Sticker", 0, 9)  //sticker number will change which one is displayed
+    s1.add(sticker_control_1,"width",0,300)     //controls width
+    s1.add(sticker_control_1,"height",0,300)       //controls height
+    s1.add(sticker_control_1,"rotation",0,10)       //controls rotation
    
     let s2 = gui.addFolder("Sticker #2")
     s2.add(sticker_control_2, "Sticker", 0, 9)
@@ -162,14 +138,11 @@ const main = async () => {
     s3.add(sticker_control_3,"height",0,300)
     s3.add(sticker_control_3,"rotation",0,10)
 
-
-
     let s4 = gui.addFolder("Sticker #4")
     s4.add(sticker_control_4, "Sticker", 0, 9)
     s4.add(sticker_control_4,"width",0,300)
     s4.add(sticker_control_4,"height",0,300)
     s4.add(sticker_control_4,"rotation",0,10)
-
 
     let s5 = gui.addFolder("Sticker #5")
     s5.add(sticker_control_5, "Sticker", 0, 9)
@@ -177,13 +150,10 @@ const main = async () => {
     s5.add(sticker_control_5,"height",0,300)
     s5.add(sticker_control_5,"rotation",0,10)
 
-
-    app.stage.addChild(bg)
-
     texture.interactive=true        //setup for each sticker to be controlled 
-    texture.buttonMode = true
+    texture.buttonMode = true       //this allows stickers to be picked up and interacted with
     texture.anchor.set(0.5)
-    texture.on('mousedown', onDragStart)
+    texture.on('mousedown', onDragStart)    //functions below 
             .on('mouseup', onDragEnd)
             .on('mouseupoutside', onDragEnd)
             .on('mousemove', onDragMove);
@@ -256,10 +226,8 @@ const main = async () => {
 
 // Cannot be an arrow function. Arrow functions cannot have a 'this' parameter.
 function update(delta: number) {
-     //rect background function here for colors 
-    //background_controller()               //lags too much hw to cheang bg better 
     app.stage.removeChild(texture)
-    app.stage.removeChild(texture1)
+    app.stage.removeChild(texture1)     //removes all textures so they can be redrawn with update values 
     app.stage.removeChild(texture2)
     app.stage.removeChild(texture3)
     app.stage.removeChild(texture4)
@@ -269,11 +237,11 @@ function update(delta: number) {
     app.stage.removeChild(texture8)
 
     sticker1(sticker_control_1.Sticker)    //new function with new varible to add more than one sticker 
-    sticker2(sticker_control_2.Sticker)    //new function with new varible to add more than one sticker 
+    sticker2(sticker_control_2.Sticker)    
     sticker3(sticker_control_3.Sticker)
     sticker4(sticker_control_4.Sticker)
     sticker5(sticker_control_5.Sticker)
-    if (sticker_control_1.is_moving === true){
+    if (sticker_control_1.is_moving === true){      //all stickers move at once
         move1(texture)         
         move1(texture1)
         move1(texture2)
@@ -286,16 +254,16 @@ function update(delta: number) {
     }
 };
 main();
-
+//these functions(sticker1-5) are all the same a but the will control diffrent selected stickers (one main bug happens when the same sticker is selected over another one)
 function sticker1(x: number){ 
-    switch(true) {
+    switch(true) {  //allows for the images to be changed by moving the slider
         case (x < 1):
           break;
-        case (x>=1 && x<2):
-            app.stage.addChild(texture)
-            texture.width=sticker_control_1.width;
-            texture.height=sticker_control_1.height;  
-            texture.rotation=sticker_control_1.rotation ; 
+        case (x>=1 && x<2):                 //all cases are the same for each texture (diffrent pngs) that are tied to the control 
+            app.stage.addChild(texture)         
+            texture.width=sticker_control_1.width;  //sets width to gui value
+            texture.height=sticker_control_1.height;   //sets height to gui value
+            texture.rotation=sticker_control_1.rotation ;  //sets rotation to gui value
         
             break;
 
@@ -669,9 +637,7 @@ function move1(png: PIXI.Sprite){
    //console.log(png.y)
 
 }
-function interaction(){
-    
-}
+
 //fucntions used to controll drag and drop of objects, used from https://pixijs.io/examples/#/interaction/custom-hitarea.js
 function onDragStart(this: any, event: { data: any; }) {
     // store a reference to the data
@@ -696,17 +662,3 @@ function onDragMove(this: any) {
         this.y = newPosition.y;
     }
 }
-/*
-//next steps 
-  
-    --try to add gifs  / make a check to make the images move 
-
-    add audio
-        -gui slider for music 
-
-
-    add screenshot
-        =https://pixijs.io/examples/#/demos-advanced/screenshot.js
-*/
-
-//ask about background and general implamentation is there a better way to layout code so that we don't have the saem sunction copy pasted ?
