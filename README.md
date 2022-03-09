@@ -1,12 +1,1 @@
-# pixi-ts-quickstart
-
-This repo can be used as a minimal springboard for developing a pixijs app. The main.ts file has all the boilerplate code needed to get started.
-
-## dependencies
-the package.json comes pre-installed with pixi, typescript, and a few other helpful libraries
-
-
-## usage
-- cd into the repo, and run `npm i` to fetch all the dependencies.
-- edit the source typescript file(s) in the `src` folder and run `npm run dev` in the terminal to launch the vite server
-- in a separate terminal, you can also run `npm run watch` to run the typescript compiler in watch mode
+This Project originally started as a way to create custom animations to make unique rpg attack animations. Unfortunately my computer was wiped and I ended up losing a lot of time and work. From there I transitioned to something more simple, a custom screensaver. The program allows the user to add stickers to a page and change their attributes. The stickers can bounce around the screen and the background can also be changed. 
